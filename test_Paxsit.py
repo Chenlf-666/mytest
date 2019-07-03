@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import os, time
+import sys, os, time
 import configparser,unittest
 from packages.HTMLTestRunner import HTMLTestRunner
 
