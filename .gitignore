@@ -2,3 +2,5 @@
 debug.log
 report/HTMLReport.html
 *.log
+.idea/workspace.xml
+*.pyc
