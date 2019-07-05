@@ -7,6 +7,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
 import unittest,configparser
 import time
+from common.LoginPage import LoginPage
 
 class test_login(unittest.TestCase):
     @classmethod
@@ -25,8 +26,10 @@ class test_login(unittest.TestCase):
         driver = self.driver
         wait = WebDriverWait(driver, 5)
 
-        button_login = wait.until(EC.visibility_of_element_located((By.XPATH, "//span[contains(text(),'登录')]")))
+        # button_login = wait.until(EC.visibility_of_element_located((By.XPATH, "//span[contains(text(),'登录')]")))
+        button_login = LoginPage.submit()
         button_login.click()
+
         userinput = wait.until(EC.visibility_of_element_located((By.ID, "username")))
         # self.assertEqual(title, 'PAXSTORE', 'title is wrong!')
         userinput.clear()
