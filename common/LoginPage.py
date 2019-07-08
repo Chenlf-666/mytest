@@ -10,8 +10,12 @@ class LoginPage(object):
         self.config = configparser.ConfigParser()
         self.config.read_file(config_file)
 
+    def login(self):
+        element = self.driver.find_element(getLocator(self.config.get("loginPage", "login")))
+        return element
+
     def username(self):
-        element = self.driver.find_element(getLocator(self.config.get("loginPage","user")))
+        element = self.driver.find_element(getLocator(self.config.get("loginPage", "user")))
         return element
 
     def passwd(self):

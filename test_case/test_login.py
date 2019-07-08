@@ -24,19 +24,22 @@ class test_login(unittest.TestCase):
         # time.sleep(5)
         username, passwd = self.username, self.passwd
         driver = self.driver
+        Page = LoginPage(driver)
         wait = WebDriverWait(driver, 5)
 
-        # button_login = wait.until(EC.visibility_of_element_located((By.XPATH, "//span[contains(text(),'登录')]")))
-        button_login = LoginPage.submit()
-        button_login.click()
+        wait.until(EC.visibility_of_element_located((By.XPATH, "//span[contains(text(),'登录')]")))
+        self.button_login = Page.submit()
+        self.button_login.click()
 
-        userinput = wait.until(EC.visibility_of_element_located((By.ID, "username")))
-        # self.assertEqual(title, 'PAXSTORE', 'title is wrong!')
-        userinput.clear()
-        userinput.send_keys(username)
-        driver.find_element_by_id("password").clear()
-        driver.find_element_by_id("password").send_keys(passwd)
-        driver.find_element_by_id("submitBtn").click()
+        self.input_username = Page.username()
+        self.input_username.clear()
+        self.input_username.send_keys(username)
+        self.input_passwd = Page.passwd()
+        self.input_passwd.clear()
+        self.input_passwd.send_keys(passwd)
+        self.button_submit = Page.submit()
+        self.button_submit.click()
+
         wait.until(EC.visibility_of_element_located((By.CLASS_NAME, "AppListView-app-list-row")))
         assert "chentest" in driver.page_source,"login failed"
         time.sleep(5)
@@ -45,16 +48,22 @@ class test_login(unittest.TestCase):
         # time.sleep(5)
         username, passwd = self.username, self.passwd
         driver = self.driver
+        Page = LoginPage(driver)
         wait = WebDriverWait(driver, 5)
-        button_login = wait.until(EC.visibility_of_element_located((By.XPATH, "//span[contains(text(),'登录')]")))
-        button_login.click()
-        userinput = wait.until(EC.visibility_of_element_located((By.ID, "username")))
-        # self.assertEqual(title, 'PAXSTORE', 'title is wrong!')
-        userinput.clear()
-        userinput.send_keys(username)
-        driver.find_element_by_id("password").clear()
-        driver.find_element_by_id("password").send_keys("hahaha")
-        driver.find_element_by_id("submitBtn").click()
+
+        wait.until(EC.visibility_of_element_located((By.XPATH, "//span[contains(text(),'登录')]")))
+        self.button_login = Page.submit()
+        self.button_login.click()
+
+        self.input_username = Page.username()
+        self.input_username.clear()
+        self.input_username.send_keys(username)
+        self.input_passwd = Page.passwd()
+        self.input_passwd.clear()
+        self.input_passwd.send_keys(passwd)
+        self.button_submit = Page.submit()
+        self.button_submit.click()
+
         error_alert = wait.until(EC.visibility_of_element_located((By.CLASS_NAME, "alert-error")))
         error_content = error_alert.text
         self.assertEquals(error_content, "无效的登录信息", "页面源码中不存在该关键字")
