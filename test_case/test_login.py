@@ -12,7 +12,7 @@ from common.LoginPage import LoginPage
 class test_login(unittest.TestCase):
     @classmethod
     def setUpClass(self) -> None:
-        self.baseurl, self.username, self.passwd = self.get_config(self)
+        self.baseurl, self.username, self.passwd = self.get_config()
         self.driver = webdriver.Chrome()
 
     def setUp(self) -> None:
