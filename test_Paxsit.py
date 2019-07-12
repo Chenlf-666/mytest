@@ -1,22 +1,16 @@
 # -*- coding: utf-8 -*-
 
-import sys, os, time
-import configparser,unittest
+import time
+import unittest
 from packages.HTMLTestRunner import HTMLTestRunner
-
-# def get_config():
-#     config_file_name = './config/config.ini'
-#     config_file = open(config_file_name, 'r')
-#     config = configparser.ConfigParser()
-#     config.read_file(config_file)
-#     baseurl = config.get("base", "baseurl")
-#     username = config.get("base", "user")
-#     passwd = config.get("base", "passwd")
-#     return baseurl,username,passwd
-#     config_file.close()
+from common import CommonConf
 
 if __name__ == "__main__":
+    start = time.time()
+    logger = CommonConf.get_logger()
+    logger.info("======================Test Start=====================")
     suite = unittest.TestSuite()
+
     # test_case_list = [ i for i in os.listdir("./test_case") if i.startswith("test") ]
     # for case in test_case_list:
     #     suite.addTest()
@@ -32,3 +26,7 @@ if __name__ == "__main__":
 
     runner = unittest.TestLoader().discover('test_case')
     unittest.TextTestRunner(verbosity=2).run(runner)
+    end = time.time()
+    runtime = str(int(end - start)) + "s"
+    logger.info("======================Test End=====================")
+    logger.info("===RunTime: " + runtime)

@@ -14,6 +14,3 @@ def getLocInfo(locater):
     if key == "xpath":
         return By.XPATH, value
 
-
-def test():
-    print("ggggggggggggggggggggg")
