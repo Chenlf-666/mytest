@@ -1,43 +1,47 @@
-# from . import getLocator
+# -*- coding: utf-8 -*-
+from . import getLocator
 from selenium import webdriver
 import configparser,time
 
-from common import getLocator
+# from common import getLocator
 
 class LoginPage(object):
     def __init__(self, driver):
         self.driver = driver
-        config_file_name = '../config/element.ini'
-        config_file = open(config_file_name, 'r')
+        config_file_name = './config/element.ini'
         self.config = configparser.ConfigParser()
-        self.config.read_file(config_file)
+        self.config.read(config_file_name, encoding="utf-8-sig")
 
     def login(self):
-        print(self.driver)
-        print(self.config)
-        print(getLocator.getLocator(self.config.get("loginPage", "login")))
-        element = self.driver.find_element(getLocator.getLocator(self.config.get("loginPage", "login")))
+        key, value = getLocator.getLocInfo(self.config.get("loginPage", "login"))
+        # print(value)
+        element = self.driver.find_element(key, value)
         return element
 
     def username(self):
-        element = self.driver.find_element(getLocator.getLocator(self.config.get("loginPage", "user")))
+        key, value = getLocator.getLocInfo(self.config.get("loginPage", "user"))
+        element = self.driver.find_element(key, value)
         return element
 
     def passwd(self):
-        element = self.driver.find_element(getLocator(self.config.get("loginPage", "passwd")))
+        key, value = getLocator.getLocInfo(self.config.get("loginPage", "passwd"))
+        element = self.driver.find_element(key, value)
         return element
 
     def submit(self):
-        element = self.driver.find_element(getLocator(self.config.get("loginPage", "submit")))
+        key, value = getLocator.getLocInfo(self.config.get("loginPage", "submit"))
+        element = self.driver.find_element(key, value)
         return element
 
     def keyword(self):
-        print(self.config.get("loginPage", "kw"))
-        element = self.driver.find_element(getLocator.getLocator(self.config.get("loginPage", "kw")))
+        key, value = getLocator.getLocInfo(self.config.get("loginPage", "kw"))
+        print(key, "-------------", value)
+        element = self.driver.find_element(key, value)
         return element
 
     def submit2(self):
-        element = self.driver.find_element(getLocator.getLocator(self.config.get("loginPage", "su")))
+        key, value = getLocator.getLocInfo(self.config.get("loginPage", "su"))
+        element = self.driver.find_element(key, value)
         return element
 
 if __name__ == "__main__":
@@ -45,8 +49,8 @@ if __name__ == "__main__":
     driver.get("https://www.baidu.com")
     page = LoginPage(driver)
     kw = page.keyword()
-    kw.input("123123")
+    kw.send_keys("123123")
     sub = page.submit2()
     sub.click()
-    time.sleep(30)
+    time.sleep(5)
     driver.close()

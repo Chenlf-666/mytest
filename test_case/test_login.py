@@ -52,17 +52,17 @@ class test_login(unittest.TestCase):
         wait = WebDriverWait(driver, 5)
 
         wait.until(EC.visibility_of_element_located((By.XPATH, "//span[contains(text(),'登录')]")))
-        self.button_login = Page.submit()
-        self.button_login.click()
+        button_login = Page.login()
+        button_login.click()
 
-        self.input_username = Page.username()
-        self.input_username.clear()
-        self.input_username.send_keys(username)
-        self.input_passwd = Page.passwd()
-        self.input_passwd.clear()
-        self.input_passwd.send_keys(passwd)
-        self.button_submit = Page.submit()
-        self.button_submit.click()
+        input_username = Page.username()
+        input_username.clear()
+        input_username.send_keys(username)
+        input_passwd = Page.passwd()
+        input_passwd.clear()
+        input_passwd.send_keys("chenchen")
+        button_submit = Page.submit()
+        button_submit.click()
 
         error_alert = wait.until(EC.visibility_of_element_located((By.CLASS_NAME, "alert-error")))
         error_content = error_alert.text
