@@ -4,10 +4,14 @@ import time
 import unittest
 from packages.HTMLTestRunner import HTMLTestRunner
 from common import CommonConf
+import logging
+
 
 if __name__ == "__main__":
     start = time.time()
-    logger = CommonConf.get_logger()
+
+    logconf = CommonConf.ParseConfig()
+    logger = logconf.get_logger()
     logger.info("======================Test Start=====================")
     suite = unittest.TestSuite()
 
