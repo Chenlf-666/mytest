@@ -13,8 +13,9 @@ from common import CommonConf
 class test_login(unittest.TestCase):
     @classmethod
     def setUpClass(self) -> None:
-        self.baseurl, self.username, self.passwd = CommonConf.get_config()
-        self.logger = CommonConf.get_logger()
+        comconf = CommonConf.ParseConfig()
+        self.baseurl, self.username, self.passwd = comconf.get_config()
+        self.logger = comconf.get_logger()
         self.driver = webdriver.Chrome()
         self.wait = WebDriverWait(self.driver, 5)
         self.logger.info("Init Class: %s" % self.__name__)
@@ -27,29 +28,18 @@ class test_login(unittest.TestCase):
     def test_1_login_success(self):
         # time.sleep(5)
         self.logger.info("Init Function: %s" % sys._getframe().f_code.co_name)
-        username, passwd = self.username, self.passwd
         driver = self.driver
         wait = self.wait
         Page = LoginPage(driver)
-
-        # wait.until(EC.visibility_of_element_located((By.XPATH, "//span[contains(text(),'登录')]")))
-        button_login = Page.login()
-        button_login.click()
-
-        input_username = Page.username()
-        input_username.clear()
-        input_username.send_keys(username)
-        input_passwd = Page.passwd()
-        input_passwd.clear()
-        input_passwd.send_keys(passwd)
-        button_submit = Page.submit()
-        button_submit.click()
+        Page.Action_login()
 
         try:
             wait.until(EC.visibility_of_element_located((By.CLASS_NAME, "useractionbtn")))
-        except:
+        except NoSuchElementException as e:
             self.logger.error("Login Failed")
             self.logger.error(traceback.format_exc())
+        else:
+            self.logger.info("Verrify Success - Login ")
         time.sleep(3)
 
     def test_2_login_fail(self):
@@ -60,25 +50,20 @@ class test_login(unittest.TestCase):
         Page = LoginPage(driver)
 
         # wait.until(EC.visibility_of_element_located((By.XPATH, "//span[contains(text(),'登录')]")), "Login Time Out")
-        button_login = Page.login()
-        button_login.click()
-
-        input_username = Page.username()
-        input_username.clear()
-        input_username.send_keys(username)
-        input_passwd = Page.passwd()
-        input_passwd.clear()
-        input_passwd.send_keys("chenchen")
-        button_submit = Page.submit()
-        button_submit.click()
+        Page.Action_login_password_error()
 
         try:
             error_alert = wait.until(EC.visibility_of_element_located((By.CLASS_NAME, "alert-error")))
             error_content = error_alert.text
             self.assertEquals(error_content, "无效的登录信息")
-        except:
+        except NoSuchElementException as e:
+            self.logger.error("查找的页面元素不存在")
+            self.logger.error(traceback.format_exc())
+        except AssertionError as e:
             self.logger.error("页面源码中不存在该关键字")
             self.logger.error(traceback.format_exc())
+        else:
+            self.logger.info("Verrify Success - Login with wrong password")
 
     def is_element_present(self, how, what):
         try:
@@ -111,14 +96,7 @@ class test_login(unittest.TestCase):
         if self.is_element_present(By.CLASS_NAME, "useractionbtn"):
             print("has login in, logouting")
             Page = AnyPage(driver)
-            button_userinfo = Page.userinfo()
-            button_userinfo.click()
-            button_logout = Page.logout()
-            time.sleep(1)
-            button_logout.click()
-            time.sleep(1)
-            if self.is_element_present(By.CLASS_NAME, "useractionbtn"):
-                self.logger.error("Logout Failed")
+            Page.Action_logout()
 
     @classmethod
     def tearDownClass(self) -> None:
